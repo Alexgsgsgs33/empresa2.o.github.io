@@ -43,11 +43,13 @@ async function cargarGaleria() {
       div.className = 'tarjeta';
       div.innerHTML = `
         <img src="${item.imagen}" alt="${item.nombre}">
-        <h3>${item.nombre}</h3>
-        <p><strong>Producto:</strong> ${item.productos}</p>
-        <p><strong>Sector:</strong> ${item.sector}</p>
-        <p><a href="${item.facebook}" target="_blank">Facebook</a> | 
-           <a href="${item.instagram}" target="_blank">Instagram</a></p>
+        <div class="tarjeta-content">
+          <h3>${item.nombre}</h3>
+          <p><strong>Producto:</strong> ${item.productos}</p>
+          <p><strong>Sector:</strong> ${item.sector}</p>
+          <a href="${item.facebook}" target="_blank">Facebook</a> 
+          <a href="${item.instagram}" target="_blank">Instagram</a>
+        </div>
       `;
       galeria.appendChild(div);
     });
