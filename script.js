@@ -1,30 +1,11 @@
-// ======================
-// Configuración de Acceso
-// ======================
+// Configuración de acceso
 const CREDENCIALES = {
     usuario: "admin",
     password: "emprendedoras2024"
 };
 
-// ======================
-// Elementos del DOM
-// ======================
-const contenedor = document.getElementById('contenedor');
-const modal = document.getElementById('modal');
-const modalInfo = document.getElementById('modal-info');
-const loginModal = document.getElementById('loginModal');
-const btnAdmin = document.getElementById('btn-admin');
-const loginForm = document.getElementById('loginForm');
-const loginError = document.getElementById('loginError');
-const closeButtons = document.querySelectorAll('.close');
-const filtros = document.querySelectorAll('.filtro-btn');
-
-// ======================
-// Funciones Principales
-// ======================
-
-// Cargar datos desde sessionStorage o localStorage
-const cargarDatos = () => {
+// Función para cargar datos
+function cargarDatos() {
     try {
         const datosSession = JSON.parse(sessionStorage.getItem("emprendimientosPublicos"));
         const datosLocal = JSON.parse(localStorage.getItem("emprendimientos"));
@@ -33,49 +14,14 @@ const cargarDatos = () => {
         console.error("Error al cargar datos:", error);
         return [];
     }
-};
+}
 
-// Mostrar emprendimientos con filtro
-const mostrarEmprendimientos = (sector = 'todos') => {
-    contenedor.innerHTML = '';
-    const datos = cargarDatos();
+// Función para mostrar detalles
+function mostrarDetalles(emp, esAdmin = false) {
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-info') || document.getElementById('modalContent');
     
-    if (datos.length === 0) {
-        contenedor.innerHTML = '<p class="sin-resultados">No hay emprendimientos registrados aún</p>';
-        return;
-    }
-
-    const filtrados = sector === 'todos' 
-        ? datos 
-        : datos.filter(emp => emp.sector === sector);
-
-    if (filtrados.length === 0) {
-        contenedor.innerHTML = '<p class="sin-resultados">No hay emprendimientos en esta categoría</p>';
-        return;
-    }
-
-    filtrados.forEach(emp => {
-        const card = document.createElement('div');
-        card.className = 'negocio';
-        card.innerHTML = `
-            <img src="${emp.imagen}" 
-                 onerror="this.src='https://via.placeholder.com/500x300?text=Imagen+no+disponible'"
-                 alt="${emp.nombre}">
-            <h3>${emp.nombre}</h3>
-            <p><strong>${emp.productos}</strong></p>
-            <span class="sector">${emp.sector}</span>
-            <p style="margin-top:15px; color:#0d47a1; font-weight:500;">
-                👆 Haz clic para ver detalles
-            </p>
-        `;
-        card.addEventListener('click', () => mostrarDetalles(emp));
-        contenedor.appendChild(card);
-    });
-};
-
-// Mostrar detalles en modal
-const mostrarDetalles = (emp) => {
-    modalInfo.innerHTML = `
+    let contenido = `
         <img src="${emp.imagen}" class="modal-img"
              onerror="this.src='https://via.placeholder.com/800x400?text=Imagen+no+disponible'"
              alt="${emp.nombre}">
@@ -108,65 +54,40 @@ const mostrarDetalles = (emp) => {
             <small>📅 Registrado el: ${emp.fechaRegistro || 'Fecha no disponible'}</small>
         </p>
     `;
-    modal.style.display = 'flex';
-};
 
-// ======================
-// Manejadores de Eventos
-// ======================
-
-// Mostrar modal de login
-btnAdmin.addEventListener('click', () => {
-    loginModal.style.display = 'flex';
-});
-
-// Validar credenciales
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const usuario = document.getElementById('usuario').value;
-    const password = document.getElementById('password').value;
-    
-    if(usuario === CREDENCIALES.usuario && password === CREDENCIALES.password) {
-        // Crear sesión válida por 1 hora
-        const session = {
-            logged: true,
-            expires: Date.now() + 3600000 // 1 hora
-        };
-        sessionStorage.setItem('adminAuth', JSON.stringify(session));
-        window.location.href = 'galeria.html';
-    } else {
-        loginError.style.display = 'block';
-        setTimeout(() => {
-            loginError.style.display = 'none';
-        }, 3000);
+    if(esAdmin) {
+        contenido += `
+            <button class="btn-eliminar" onclick="eliminarEmprendimiento(${emp.id})">
+                🗑️ Eliminar Emprendimiento
+            </button>
+        `;
     }
-});
 
-// Cerrar modales
-closeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        modal.style.display = 'none';
-        loginModal.style.display = 'none';
-    });
-});
+    modalContent.innerHTML = contenido;
+    modal.style.display = 'flex';
+}
 
-// Cerrar al hacer clic fuera
-window.addEventListener('click', (e) => {
-    if (e.target === modal) modal.style.display = 'none';
-    if (e.target === loginModal) loginModal.style.display = 'none';
-});
+// Función para eliminar emprendimiento (usada en admin)
+function eliminarEmprendimiento(id) {
+    if (!confirm('¿Estás seguro de eliminar este emprendimiento?\nEsta acción no se puede deshacer.')) {
+        return;
+    }
+    
+    let emprendimientos = JSON.parse(localStorage.getItem('emprendimientos')) || [];
+    emprendimientos = emprendimientos.filter(emp => emp.id !== id);
+    localStorage.setItem('emprendimientos', JSON.stringify(emprendimientos));
+    sessionStorage.setItem('emprendimientosPublicos', JSON.stringify(emprendimientos));
+    
+    document.getElementById('modal').style.display = 'none';
+    
+    // Recargar vista si estamos en admin
+    if(document.querySelector('.filtros button.active')) {
+        const sectorActivo = document.querySelector('.filtros button.active').dataset.sector;
+        mostrarEmprendimientos(sectorActivo);
+    } else {
+        mostrarEmprendimientos();
+    }
+}
 
-// Configurar filtros
-filtros.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filtros.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        mostrarEmprendimientos(btn.dataset.sector);
-    });
-});
-
-// ======================
-// Inicialización
-// ======================
-mostrarEmprendimientos();
+// Hacer la función disponible globalmente
+window.eliminarEmprendimiento = eliminarEmprendimiento;
