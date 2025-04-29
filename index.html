@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emprendimientos Femeninos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Emprendimientos Femeninos</h1>
+            <p class="subtitle">Descubre y apoya negocios liderados por mujeres</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="filtros">
+            <button class="filtro-btn active" data-sector="todos">🌟 Todos</button>
+            <button class="filtro-btn" data-sector="Alimentos y Bebidas">🍏 Alimentos</button>
+            <button class="filtro-btn" data-sector="Artesanías">🎨 Artesanías</button>
+            <button class="filtro-btn" data-sector="Belleza y Cuidado Personal">💄 Belleza</button>
+            <button class="filtro-btn" data-sector="Moda y Accesorios">👗 Moda</button>
+            <button class="filtro-btn" data-sector="Tecnología">💻 Tecnología</button>
+            <button class="filtro-btn" data-sector="Educación">📚 Educación</button>
+            <button class="filtro-btn" data-sector="Salud y Bienestar">🏥 Salud</button>
+            <button class="filtro-btn" data-sector="Articulos de Novedad">🎁 Novedades</button>
+            <button class="filtro-btn" data-sector="Otros">✨ Otros</button>
+        </div>
+
+        <div id="contenedor" class="tarjetas">
+            <p class="sin-resultados">Cargando emprendimientos...</p>
+        </div>
+
+        <center>
+            <button id="btn-admin" class="admin-link">🔒 Acceso Administradores</button>
+        </center>
+    </div>
+
+    <!-- Modal para detalles -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-info"></div>
+        </div>
+    </div>
+
+    <!-- Modal para login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 style="text-align:center; color:#0d47a1;">Acceso Administrativo</h3>
+            <form id="loginForm">
+                <input type="text" id="usuario" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button type="submit">Ingresar</button>
+                <p id="loginError" class="login-error">Credenciales incorrectas</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
