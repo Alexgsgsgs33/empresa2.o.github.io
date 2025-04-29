@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Galería de Emprendedoras (Admin)</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <script>
+        const auth = JSON.parse(sessionStorage.getItem('adminAuth')) || {};
+        if(!auth.logged || auth.expires < Date.now()) {
+            sessionStorage.removeItem('adminAuth');
+            alert('Debes iniciar sesión para acceder a esta página');
+            window.location.href = 'publico.html';
+        }
+    </script>
+
+    <h1>Galería de Emprendedoras (Admin)</h1>
+    
+    <div class="contenedor-botones">
+        <a href="index.html" class="btn-registro">📝 Registrar Nuevo</a>
+        <a href="publico.html" class="btn-publico">👀 Ver Vista Pública</a>
+    </div>
+    
+    <div class="filtros">
+        <button data-sector="todos" class="active">Todos</button>
+        <button data-sector="Alimentos y Bebidas">🍏 Alimentos</button>
+        <button data-sector="Artesanías">🎨 Artesanías</button>
+        <button data-sector="Belleza y Cuidado Personal">💄 Belleza</button>
+        <button data-sector="Moda y Accesorios">👗 Moda</button>
+        <button data-sector="Tecnología">💻 Tecnología</button>
+        <button data-sector="Educación">📚 Educación</button>
+        <button data-sector="Salud y Bienestar">🏥 Salud</button>
+        <button data-sector="Articulos de Novedad">🎁 Novedades</button>
+        <button data-sector="Otros">✨ Otros</button>
+    </div>
+
+    <div id="contenedor" class="tarjetas"></div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contenedor = document.getElementById('contenedor');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            const filtros = document.querySelectorAll('.filtros button');
+            
+            let emprendimientos = [];
+            let emprendimientoSeleccionado = null;
+
+            function cargarDatos() {
+                emprendimientos = JSON.parse(localStorage.getItem('emprendimientos')) || [];
+                sessionStorage.setItem('emprendimientosPublicos', JSON.stringify(emprendimientos));
+                return emprendimientos;
+            }
+
+            function mostrarEmprendimientos(sector = 'todos') {
+                contenedor.innerHTML = '';
+                const datos = cargarDatos();
+                
+                if (datos.length === 0) {
+                    contenedor.innerHTML = '<p class="sin-resultados">No hay emprendimientos registrados aún</p>';
+                    return;
+                }
+
+                const filtrados = sector === 'todos' 
+                    ? datos 
+                    : datos.filter(emp => emp.sector === sector);
+
+                if (filtrados.length === 0) {
+                    contenedor.innerHTML = '<p class="sin-resultados">No hay emprendimientos en esta categoría</p>';
+                    return;
+                }
+
+                filtrados.forEach(emp => {
+                    const card = document.createElement('div');
+                    card.className = 'negocio';
+                    card.innerHTML = `
+                        <button class="eliminar-tarjeta" data-id="${emp.id}" title="Eliminar">×</button>
+                        <img src="${emp.imagen}" alt="${emp.nombre}" 
+                             onerror="this.src='https://via.placeholder.com/400x200?text=Imagen+no+disponible'">
+                        <h3>${emp.nombre}</h3>
+                        <p><strong>${emp.productos}</strong></p>
+                        <p><small>Sector: ${emp.sector}</small></p>
+                        <button class="btn-eliminar" data-id="${emp.id}">🗑️ Eliminar</button>
+                    `;
+                    
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('eliminar-tarjeta') && !e.target.classList.contains('btn-eliminar')) {
+                            mostrarDetalles(emp, true);
+                        }
+                    });
+                    
+                    card.querySelector('.btn-eliminar').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        eliminarEmprendimiento(emp.id);
+                    });
+                    
+                    card.querySelector('.eliminar-tarjeta').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        eliminarEmprendimiento(emp.id);
+                    });
+                    
+                    contenedor.appendChild(card);
+                });
+            }
+
+            function eliminarEmprendimiento(id) {
+                if (!confirm('¿Estás seguro de eliminar este emprendimiento?\nEsta acción no se puede deshacer.')) {
+                    return;
+                }
+                
+                emprendimientos = emprendimientos.filter(emp => emp.id !== id);
+                localStorage.setItem('emprendimientos', JSON.stringify(emprendimientos));
+                sessionStorage.setItem('emprendimientosPublicos', JSON.stringify(emprendimientos));
+                
+                modal.style.display = 'none';
+                
+                const sectorActivo = document.querySelector('.filtros button.active').dataset.sector;
+                mostrarEmprendimientos(sectorActivo);
+            }
+
+            window.eliminarEmprendimiento = eliminarEmprendimiento;
+
+            modalContent.addEventListener('click', (e) => {
+                if (e.target.classList.contains('close')) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            filtros.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filtros.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    mostrarEmprendimientos(btn.dataset.sector);
+                });
+            });
+
+            mostrarEmprendimientos();
+        });
+    </script>
+</body>
+</html>
