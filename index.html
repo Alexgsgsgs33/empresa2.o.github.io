@@ -3,39 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Emprendimientos</title>
-  <link rel="stylesheet" href="estilos.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Galería de Emprendimientos</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header>
+    <h1>Emprendimientos</h1>
+  </header>
 
-<header>
-  <h1>Registro de Emprendimientos</h1>
-</header>
-
-<main>
-  <section class="formulario-section">
-    <form id="formulario" class="formulario">
-      <input type="text" name="nombre" placeholder="Nombre del Emprendimiento" required>
-      <input type="text" name="productos" placeholder="Productos / Servicios" required>
-      <input type="text" name="sector" placeholder="Sector" required>
-      <input type="text" name="direccion" placeholder="Dirección" required>
-      <input type="text" name="contacto" placeholder="Teléfono o WhatsApp" required>
-      <input type="url" name="imagen" placeholder="Link de Imagen Principal" required>
-      <input type="url" name="foto" placeholder="Link de Foto de Perfil" required>
-      <input type="url" name="facebook" placeholder="Facebook URL" required>
-      <input type="url" name="instagram" placeholder="Instagram URL" required>
-      <button type="submit" class="boton-registrar">Registrar Emprendimiento</button>
+  <section class="formulario">
+    <form id="emprendimiento-form">
+      <input type="text" id="nombre" placeholder="Nombre" required>
+      <input type="text" id="productos" placeholder="Productos" required>
+      <input type="text" id="sector" placeholder="Sector" required>
+      <input type="text" id="direccion" placeholder="Dirección" required>
+      <input type="text" id="contacto" placeholder="Contacto" required>
+      <input type="url" id="imagen" placeholder="URL de Imagen" required>
+      <input type="url" id="facebook" placeholder="Facebook">
+      <input type="url" id="instagram" placeholder="Instagram">
+      <button type="submit">Registrar</button>
     </form>
   </section>
 
-  <section class="galeria-section">
-    <h2>Emprendimientos Registrados</h2>
-    <div id="galeria" class="galeria"></div>
-  </section>
-</main>
+  <section class="galeria" id="galeria"></section>
 
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
