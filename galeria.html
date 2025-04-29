@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Galería de Emprendedoras (Admin)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        .contenedor-botones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .btn-registro {
+            padding: 10px 20px;
+            background-color: #673AB7;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-registro:hover {
+            background-color: #5E35B1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .btn-publico {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-publico:hover {
+            background-color: #3e8e41;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .tarjetas {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            padding: 20px;
+        }
+        .negocio {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 280px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .negocio:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .negocio img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            height: 180px;
+            object-fit: cover;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            text-align: center;
+        }
+        .modal-content img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            object-fit: contain;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #888;
+        }
+        .redes {
+            margin-top: 20px;
+        }
+        .redes a {
+            display: inline-block;
+            margin: 8px;
+            padding: 8px 16px;
+            background-color: #0d47a1;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+        .redes a:hover {
+            background-color: #093170;
+        }
+        .persona-img {
+            max-width: 150px;
+            margin-top: 10px;
+            border-radius: 50%;
+            border: 3px solid #0d47a1;
+        }
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filtros button {
+            padding: 8px 16px;
+            background-color: #0d47a1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .filtros button:hover {
+            background-color: #093170;
+        }
+        .filtros button.active {
+            background-color: #4CAF50;
+        }
+        .sin-resultados {
+            text-align: center;
+            width: 100%;
+            color: #666;
+            font-style: italic;
+            margin-top: 40px;
+        }
+        .btn-eliminar {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .btn-eliminar:hover {
+            background-color: #cc0000;
+            transform: scale(1.02);
+        }
+        .btn-eliminar:active {
+            transform: scale(0.98);
+        }
+        .eliminar-tarjeta {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Verificación de autenticación -->
+    <script>
+        const auth = JSON.parse(sessionStorage.getItem('adminAuth')) || {};
+        if(!auth.logged || auth.expires < Date.now()) {
+            sessionStorage.removeItem('adminAuth');
+            alert('Debes iniciar sesión para acceder a esta página');
+            window.location.href = 'publico.html';
+        }
+    </script>
+
+    <h1>Galería de Emprendedoras (Admin)</h1>
+    
+    <!-- Botones de navegación mejorados -->
+    <div class="contenedor-botones">
+        <a href="index.html" class="btn-registro">📝 Registrar Nuevo</a>
+        <a href="publico.html" class="btn-publico">👀 Ver Vista Pública</a>
+    </div>
+    
+    <!-- Filtros por sector -->
+    <div class="filtros">
+        <button data-sector="todos" class="active">Todos</button>
+        <button data-sector="Alimentos y Bebidas">🍏 Alimentos</button>
+        <button data-sector="Artesanías">🎨 Artesanías</button>
+        <button data-sector="Belleza y Cuidado Personal">💄 Belleza</button>
+        <button data-sector="Moda y Accesorios">👗 Moda</button>
+        <button data-sector="Tecnología">💻 Tecnología</button>
+        <button data-sector="Educación">📚 Educación</button>
+        <button data-sector="Salud y Bienestar">🏥 Salud</button>
+        <button data-sector="Articulos de Novedad">🎁 Novedades</button>
+        <button data-sector="Otros">✨ Otros</button>
+    </div>
+
+    <div id="contenedor" class="tarjetas"></div>
+
+    <!-- Modal para detalles -->
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contenedor = document.getElementById('contenedor');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            const filtros = document.querySelectorAll('.filtros button');
+            
+            let emprendimientos = [];
+            let emprendimientoSeleccionado = null;
+
+            // Cargar datos iniciales
+            function cargarDatos() {
+                emprendimientos = JSON.parse(localStorage.getItem('emprendimientos')) || [];
+                sessionStorage.setItem('emprendimientosPublicos', JSON.stringify(emprendimientos));
+                return emprendimientos;
+            }
+
+            // Mostrar emprendimientos con filtro
+            function mostrarEmprendimientos(sector = 'todos') {
+                contenedor.innerHTML = '';
+                const datos = cargarDatos();
+                
+                if (datos.length === 0) {
+                    contenedor.innerHTML = '<p class="sin-resultados">No hay emprendimientos registrados aún</p>';
+                    return;
+                }
+
+                const filtrados = sector === 'todos' 
+                    ? datos 
+                    : datos.filter(emp => emp.sector === sector);
+
+                if (filtrados.length === 0) {
+                    contenedor.innerHTML = '<p class="sin-resultados">No hay emprendimientos en esta categoría</p>';
+                    return;
+                }
+
+                filtrados.forEach(emp => {
+                    const card = document.createElement('div');
+                    card.className = 'negocio';
+                    card.innerHTML = `
+                        <button class="eliminar-tarjeta" data-id="${emp.id}" title="Eliminar">×</button>
+                        <img src="${emp.imagen}" alt="${emp.nombre}" 
+                             onerror="this.src='https://via.placeholder.com/400x200?text=Imagen+no+disponible'">
+                        <h3>${emp.nombre}</h3>
+                        <p><strong>${emp.productos}</strong></p>
+                        <p><small>Sector: ${emp.sector}</small></p>
+                        <button class="btn-eliminar" data-id="${emp.id}">🗑️ Eliminar</button>
+                    `;
+                    
+                    // Evento para mostrar detalles
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('eliminar-tarjeta') && !e.target.classList.contains('btn-eliminar')) {
+                            mostrarDetalles(emp);
+                        }
+                    });
+                    
+                    // Evento para eliminar desde tarjeta
+                    card.querySelector('.btn-eliminar').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        eliminarEmprendimiento(emp.id);
+                    });
+                    
+                    // Evento para eliminar con botón ×
+                    card.querySelector('.eliminar-tarjeta').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        eliminarEmprendimiento(emp.id);
+                    });
+                    
+                    contenedor.appendChild(card);
+                });
+            }
+
+            // Mostrar detalles en modal
+            function mostrarDetalles(emp) {
+                emprendimientoSeleccionado = emp;
+                modalContent.innerHTML = `
+                    <span class="close">&times;</span>
+                    <img src="${emp.imagen}" alt="${emp.nombre}" 
+                         onerror="this.src='https://via.placeholder.com/600x300?text=Imagen+no+disponible'"
+                         style="max-height:300px;">
+                    <h2>${emp.nombre}</h2>
+                    <p><strong>📋 Productos/Servicios:</strong> ${emp.productos}</p>
+                    <p><strong>🏷️ Sector:</strong> ${emp.sector}</p>
+                    <p><strong>📞 Contacto:</strong> ${emp.contacto}</p>
+                    ${emp.direccion ? `<p><strong>📍 Dirección:</strong> ${emp.direccion}</p>` : ''}
+                    
+                    <img src="${emp.foto}" alt="Foto de ${emp.nombre}" 
+                         class="persona-img"
+                         onerror="this.src='https://via.placeholder.com/150?text=Foto+no+disponible'">
+                    
+                    ${emp.facebook || emp.instagram ? `
+                    <div class="redes">
+                        ${emp.facebook ? `<a href="${emp.facebook.includes('://') ? emp.facebook : 'https://'+emp.facebook}" 
+                                           target="_blank">Facebook</a>` : ''}
+                        ${emp.instagram ? `<a href="${emp.instagram.includes('://') ? emp.instagram : 'https://'+emp.instagram}" 
+                                             target="_blank">Instagram</a>` : ''}
+                    </div>` : ''}
+                    
+                    <p><small>📅 Registrado el: ${emp.fechaRegistro || 'Fecha no disponible'}</small></p>
+                    
+                    <button class="btn-eliminar" data-id="${emp.id}">
+                        🗑️ Eliminar Emprendimiento
+                    </button>
+                `;
+                
+                modal.style.display = 'flex';
+                
+                // Evento para eliminar desde modal
+                modalContent.querySelector('.btn-eliminar').addEventListener('click', () => {
+                    eliminarEmprendimiento(emp.id);
+                });
+            }
+
+            // Función para eliminar emprendimiento
+            function eliminarEmprendimiento(id) {
+                if (!confirm('¿Estás seguro de eliminar este emprendimiento?\nEsta acción no se puede deshacer.')) {
+                    return;
+                }
+                
+                emprendimientos = emprendimientos.filter(emp => emp.id !== id);
+                localStorage.setItem('emprendimientos', JSON.stringify(emprendimientos));
+                sessionStorage.setItem('emprendimientosPublicos', JSON.stringify(emprendimientos));
+                
+                // Cerrar modal si está abierto
+                modal.style.display = 'none';
+                
+                // Recargar vista
+                const sectorActivo = document.querySelector('.filtros button.active').dataset.sector;
+                mostrarEmprendimientos(sectorActivo);
+            }
+
+            // Cerrar modal
+            modalContent.querySelector('.close')?.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // Configurar filtros
+            filtros.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filtros.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    mostrarEmprendimientos(btn.dataset.sector);
+                });
+            });
+
+            // Cargar inicialmente
+            mostrarEmprendimientos();
+        });
+    </script>
+</body>
+</html>
