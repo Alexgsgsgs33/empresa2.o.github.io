@@ -3,30 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Galería de Productos</title>
+  <title>Emprendimientos</title>
   <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <h1>Registrar Producto</h1>
+<header>
+  <h1>Registro de Emprendimientos</h1>
+</header>
 
-  <form id="formulario">
-    <input type="text" name="nombre" placeholder="Nombre" required>
-    <input type="text" name="productos" placeholder="Productos" required>
-    <input type="text" name="sector" placeholder="Sector" required>
-    <input type="text" name="direccion" placeholder="Dirección" required>
-    <input type="text" name="contacto" placeholder="Contacto" required>
-    <input type="url" name="imagen" placeholder="Link de imagen" required>
-    <input type="url" name="foto" placeholder="Link de foto de perfil" required>
-    <input type="url" name="facebook" placeholder="Link de Facebook" required>
-    <input type="url" name="instagram" placeholder="Link de Instagram" required>
-    <button type="submit">Registrar</button>
-  </form>
+<main>
+  <section class="formulario-section">
+    <form id="formulario" class="formulario">
+      <input type="text" name="nombre" placeholder="Nombre del Emprendimiento" required>
+      <input type="text" name="productos" placeholder="Productos / Servicios" required>
+      <input type="text" name="sector" placeholder="Sector" required>
+      <input type="text" name="direccion" placeholder="Dirección" required>
+      <input type="text" name="contacto" placeholder="Teléfono o WhatsApp" required>
+      <input type="url" name="imagen" placeholder="Link de Imagen Principal" required>
+      <input type="url" name="foto" placeholder="Link de Foto de Perfil" required>
+      <input type="url" name="facebook" placeholder="Facebook URL" required>
+      <input type="url" name="instagram" placeholder="Instagram URL" required>
+      <button type="submit" class="boton-registrar">Registrar Emprendimiento</button>
+    </form>
+  </section>
 
-  <h2>Galería</h2>
-  <div id="galeria"></div>
+  <section class="galeria-section">
+    <h2>Emprendimientos Registrados</h2>
+    <div id="galeria" class="galeria"></div>
+  </section>
+</main>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
