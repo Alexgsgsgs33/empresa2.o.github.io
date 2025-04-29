@@ -1,32 +1,189 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Galería de Emprendimientos</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Emprendedoras</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-weight: 600;
+        }
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-top: 15px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+        .campo-obligatorio::after {
+            content: " *";
+            color: red;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #0d47a1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        button:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .btn-galeria {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        .btn-galeria:hover {
+            background-color: #3e8e41;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .mensaje-exito {
+            text-align: center;
+            color: #4CAF50;
+            margin-top: 20px;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Emprendimientos</h1>
-  </header>
+    <header>
+        <div class="container">
+            <h1>Registro de Emprendedoras</h1>
+            <p class="subtitle">Registra tu emprendimiento en nuestra plataforma</p>
+        </div>
+    </header>
 
-  <section class="formulario">
-    <form id="emprendimiento-form">
-      <input type="text" id="nombre" placeholder="Nombre" required>
-      <input type="text" id="productos" placeholder="Productos" required>
-      <input type="text" id="sector" placeholder="Sector" required>
-      <input type="text" id="direccion" placeholder="Dirección" required>
-      <input type="text" id="contacto" placeholder="Contacto" required>
-      <input type="url" id="imagen" placeholder="URL de Imagen" required>
-      <input type="url" id="facebook" placeholder="Facebook">
-      <input type="url" id="instagram" placeholder="Instagram">
-      <button type="submit">Registrar</button>
-    </form>
-  </section>
+    <div class="container">
+        <form id="formulario">
+            <div class="form-group">
+                <label class="campo-obligatorio">Nombre del Negocio</label>
+                <input type="text" name="nombre" placeholder="Ej: Dulces Artesanales María" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="campo-obligatorio">Productos/Servicios</label>
+                <input type="text" name="productos" placeholder="Ej: Postres tradicionales, tortas personalizadas" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="campo-obligatorio">Sector Económico</label>
+                <select name="sector" required>
+                    <option value="">Seleccione el Sector Económico</option>
+                    <option value="Alimentos y Bebidas">Alimentos y Bebidas</option>
+                    <option value="Artesanías">Artesanías</option>
+                    <option value="Belleza y Cuidado Personal">Belleza y Cuidado Personal</option>
+                    <option value="Moda y Accesorios">Moda y Accesorios</option>
+                    <option value="Tecnología">Tecnología</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Salud y Bienestar">Salud y Bienestar</option>
+                    <option value="Articulos de Novedad">Artículos de novedad</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" name="direccion" placeholder="Ej: Calle 10 #20-30, Barrio Centro">
+            </div>
+            
+            <div class="form-group">
+                <label class="campo-obligatorio">Contacto</label>
+                <input type="text" name="contacto" placeholder="Teléfono/WhatsApp/Email" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="campo-obligatorio">Imagen del negocio (URL)</label>
+                <input type="url" name="imagen" placeholder="https://ejemplo.com/imagen.jpg" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Foto de la emprendedora (URL)</label>
+                <input type="url" name="foto" placeholder="https://ejemplo.com/foto.jpg">
+            </div>
+            
+            <div class="form-group">
+                <label>URL de Facebook</label>
+                <input type="url" name="facebook" placeholder="https://facebook.com/tunegocio">
+            </div>
+            
+            <div class="form-group">
+                <label>URL de Instagram</label>
+                <input type="url" name="instagram" placeholder="https://instagram.com/tunegocio">
+            </div>
+            
+            <button type="submit">Registrar Emprendimiento</button>
+            <a href="galeria.html" class="btn-galeria">Ver Galería de Emprendimientos</a>
+        </form>
 
-  <section class="galeria" id="galeria"></section>
+        <div id="mensajeExito" class="mensaje-exito"></div>
+    </div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
