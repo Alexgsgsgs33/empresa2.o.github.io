@@ -3,187 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Emprendedoras</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f7fa;
-            color: #333;
-        }
-        header {
-            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.8em;
-            font-weight: 600;
-        }
-        .subtitle {
-            font-size: 1.3em;
-            opacity: 0.9;
-            margin-top: 15px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #444;
-        }
-        .campo-obligatorio::after {
-            content: " *";
-            color: red;
-        }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            background-color: #0d47a1;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            font-weight: 500;
-        }
-        button:hover {
-            background-color: #1565c0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .btn-galeria {
-            display: block;
-            text-align: center;
-            padding: 14px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            transition: all 0.3s;
-            margin-top: 15px;
-            font-weight: 500;
-        }
-        .btn-galeria:hover {
-            background-color: #3e8e41;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .mensaje-exito {
-            text-align: center;
-            color: #4CAF50;
-            margin-top: 20px;
-            font-weight: bold;
-            display: none;
-            padding: 15px;
-            background: #e8f5e9;
-            border-radius: 8px;
-        }
-    </style>
+    <title>Emprendimientos Femeninos</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Registro de Emprendedoras</h1>
-            <p class="subtitle">Registra tu emprendimiento en nuestra plataforma</p>
+            <h1>Emprendimientos Femeninos</h1>
+            <p class="subtitle">Descubre y apoya negocios liderados por mujeres</p>
         </div>
     </header>
 
     <div class="container">
-        <form id="formulario">
-            <div class="form-group">
-                <label class="campo-obligatorio">Nombre del Negocio</label>
-                <input type="text" name="nombre" placeholder="Ej: Dulces Artesanales María" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="campo-obligatorio">Productos/Servicios</label>
-                <input type="text" name="productos" placeholder="Ej: Postres tradicionales, tortas personalizadas" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="campo-obligatorio">Sector Económico</label>
-                <select name="sector" required>
-                    <option value="">Seleccione el Sector Económico</option>
-                    <option value="Alimentos y Bebidas">Alimentos y Bebidas</option>
-                    <option value="Artesanías">Artesanías</option>
-                    <option value="Belleza y Cuidado Personal">Belleza y Cuidado Personal</option>
-                    <option value="Moda y Accesorios">Moda y Accesorios</option>
-                    <option value="Tecnología">Tecnología</option>
-                    <option value="Educación">Educación</option>
-                    <option value="Salud y Bienestar">Salud y Bienestar</option>
-                    <option value="Articulos de Novedad">Artículos de novedad</option>
-                    <option value="Otros">Otros</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Dirección</label>
-                <input type="text" name="direccion" placeholder="Ej: Calle 10 #20-30, Barrio Centro">
-            </div>
-            
-            <div class="form-group">
-                <label class="campo-obligatorio">Contacto</label>
-                <input type="text" name="contacto" placeholder="Teléfono/WhatsApp/Email" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="campo-obligatorio">Imagen del negocio (URL)</label>
-                <input type="url" name="imagen" placeholder="https://ejemplo.com/imagen.jpg" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Foto de la emprendedora (URL)</label>
-                <input type="url" name="foto" placeholder="https://ejemplo.com/foto.jpg">
-            </div>
-            
-            <div class="form-group">
-                <label>URL de Facebook</label>
-                <input type="url" name="facebook" placeholder="https://facebook.com/tunegocio">
-            </div>
-            
-            <div class="form-group">
-                <label>URL de Instagram</label>
-                <input type="url" name="instagram" placeholder="https://instagram.com/tunegocio">
-            </div>
-            
-            <button type="submit">Registrar Emprendimiento</button>
-            <a href="galeria.html" class="btn-galeria">Ver Galería de Emprendimientos</a>
-        </form>
+        <div class="filtros">
+            <button class="filtro-btn active" data-sector="todos">🌟 Todos</button>
+            <button class="filtro-btn" data-sector="Alimentos y Bebidas">🍏 Alimentos</button>
+            <button class="filtro-btn" data-sector="Artesanías">🎨 Artesanías</button>
+            <button class="filtro-btn" data-sector="Belleza y Cuidado Personal">💄 Belleza</button>
+            <button class="filtro-btn" data-sector="Moda y Accesorios">👗 Moda</button>
+            <button class="filtro-btn" data-sector="Tecnología">💻 Tecnología</button>
+            <button class="filtro-btn" data-sector="Educación">📚 Educación</button>
+            <button class="filtro-btn" data-sector="Salud y Bienestar">🏥 Salud</button>
+            <button class="filtro-btn" data-sector="Articulos de Novedad">🎁 Novedades</button>
+            <button class="filtro-btn" data-sector="Otros">✨ Otros</button>
+        </div>
 
-        <div id="mensajeExito" class="mensaje-exito"></div>
+        <div id="contenedor" class="tarjetas">
+            <p class="sin-resultados">Cargando emprendimientos...</p>
+        </div>
+
+        <center>
+            <button id="btn-admin" class="admin-link">🔒 Acceso Administradores</button>
+        </center>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Modal para detalles -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-info"></div>
+        </div>
+    </div>
+
+    <!-- Modal para login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 style="text-align:center; color:#0d47a1;">Acceso Administrativo</h3>
+            <form id="loginForm">
+                <input type="text" id="usuario" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button type="submit">Ingresar</button>
+                <p id="loginError" class="login-error">Credenciales incorrectas</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
